@@ -6,6 +6,7 @@ render_mode blend_mix;
 // PLACEHOLDER!
 //
 
+// Patch insets, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
 uniform float patch_left;
 uniform float patch_top;
 uniform float patch_right;
@@ -20,5 +21,7 @@ uniform int patch_mode;
 void fragment() {
     // For now, behave exactly like a normal Sprite2D
     vec4 tex_color = texture(TEXTURE, UV);
-    COLOR = tex_color * texture(TEXTURE, UV);
+    
+    // Multiply by the engine-provided COLOR (which already includes modulate and alpha)
+    COLOR = tex_color * COLOR;
 }
