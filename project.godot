@@ -11,12 +11,17 @@ config_version=5
 [application]
 
 config/name="NinePatchSprite2D"
+run/main_scene="uid://xr18mkxpbavr"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="NinePatchSprite2D"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/lbg.godot.ninepatchsprite2d/plugin.cfg")
 
 [rendering]
 
