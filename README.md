@@ -25,14 +25,11 @@ It mostly behaves like a normal Sprite2D (modulate, transform...), while allowin
 
 ## What Does It Do?
 
-Check it out in this brief demo:
+See it in action in this brief demonstration over on youtube:
 
-<video src="https://github.com/JeanMariePrevost/godot-nine-patch-sprite2d/blob/main/media/NinPatchSprite2D_FullDemo.mp4" title="Short Video Demonstration" width="720"></video>
-
-
-<video src="media/NinPatchSprite2D_FullDemo.mp4" width="320" height="240" controls></video>
-
-<video controls src="media/NinPatchSprite2D_FullDemo.mp4" title="Title"></video>
+<a href="https://www.youtube.com/watch?v=ueF9o35jEF0" target="_blank">
+  <img src="media/video_preview_fake_thumbnail.webp" alt="Video preview thumbnail" title="Watch on YouTube" width="480">
+</a>
 
 ---
 
