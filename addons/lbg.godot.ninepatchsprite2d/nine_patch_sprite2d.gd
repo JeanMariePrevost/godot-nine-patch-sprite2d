@@ -75,12 +75,15 @@ var _previous_self_modulate: Color = Color.WHITE
 
 func _ready() -> void:
     if not Engine.is_editor_hint():
-        _init_material()
+        _init_node()
     else:
-        call_deferred("_init_material")
+        call_deferred("_init_node")
 
 
 func _process(_delta: float) -> void:
+    if not _mat:
+        return
+
     # Push object scale to the shader
     if auto_sync_scale:
         _mat.set_shader_parameter("sprite_scale", scale)
@@ -98,6 +101,10 @@ func _init_material() -> void:
         _mat = ShaderMaterial.new()
         _mat.shader = preload("res://addons/lbg.godot.ninepatchsprite2d/nine_patch_sprite2d.gdshader")
         material = _mat
+
+
+func _init_node() -> void:
+    _init_material()
     _sync_shader()
 
 
@@ -128,11 +135,7 @@ func _convert_patch_values() -> void:
 
 ## Refreshes the shader with the current NinePatchSprite2D settings.
 func _sync_shader() -> void:
-    if not _mat or not texture:
-        return
-
-    if material != _mat:
-        push_error("Material is not the expected one. NinePatchSprite2D will not work properly. Did you replace the material?")
+    if not validate_or_refresh_material():
         return
 
     var tex_size: Vector2 = texture.get_size()
@@ -156,4 +159,47 @@ func _sync_shader() -> void:
     _mat.set_shader_parameter("patch_right", effective_patch_right)
     _mat.set_shader_parameter("patch_bottom", effective_patch_bottom)
 
+    _mat.set_shader_parameter("debug_draw_regions", debug_draw_regions)
+
+    _mat.set_shader_parameter("modulate", modulate)
+    _mat.set_shader_parameter("self_modulate", self_modulate)
+
     queue_redraw()
+
+
+## Validates the material and refreshes it if needed.
+## Returns true if the material is valid or was successfully re-initialized, false otherwise.
+func validate_or_refresh_material() -> bool:
+    if _mat == null:
+        push_warning("Material was null during validation. Re-initializing.")
+        _init_material()
+
+    if _mat.shader == null:
+        push_warning("Shader is missing from the material. Re-initializing.")
+        _mat = null
+        _init_material()
+
+    if _mat != material:
+        if material and material is ShaderMaterial:
+            push_warning("Material was changed for another ShaderMaterial. Will try to use it instead.")
+            _mat = material
+        else:
+            # Material was changed, but isn't valid for this node type
+            push_warning("Material was changed or isn't valid. Reverting to the original material.")
+            if _mat != null and _mat is ShaderMaterial:
+                material = _mat
+            else:
+                _init_material()
+
+    # Check that shader has expected parameters
+    var uniforms_found: Array = _mat.shader.get_shader_uniform_list()
+    var expected_uniforms: Array = ["patch_left", "patch_top", "patch_right", "patch_bottom", "sprite_scale", "modulate", "self_modulate", "debug_draw_regions"]
+
+    # Convert to a set of just the found names for faster lookup
+    var found_names := uniforms_found.map(func(u): return u.name)
+
+    for uniform_name in expected_uniforms:
+        if not found_names.has(uniform_name):
+            push_error("Shader appears to be incorrect. Expected parameter '%s' not found." % uniform_name)
+            return false
+    return true
