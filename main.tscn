@@ -4,23 +4,33 @@
 [ext_resource type="Shader" uid="uid://bc0wt0v5fk522" path="res://addons/lbg.godot.ninepatchsprite2d/nine_patch_sprite2d.gdshader" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://cwogro03wf3tj" path="res://addons/lbg.godot.ninepatchsprite2d/nine_patch_sprite2d.gd" id="2_h2yge"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bvp3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h2yge"]
 shader = ExtResource("1_h2yge")
-shader_parameter/patch_left = 0.0
-shader_parameter/patch_top = 0.0
-shader_parameter/patch_right = 0.0
-shader_parameter/patch_bottom = 0.0
-shader_parameter/sprite_scale = Vector2(0, 0)
-shader_parameter/patch_mode = 0
+shader_parameter/patch_left = 0.25
+shader_parameter/patch_top = 0.25
+shader_parameter/patch_right = 0.25
+shader_parameter/patch_bottom = 0.25
+shader_parameter/sprite_scale = Vector2(2.892893, 2.452117)
+shader_parameter/modulate = Vector4(1, 1, 1, 1)
+shader_parameter/self_modulate = Vector4(1, 1, 1, 1)
+shader_parameter/debug_draw_regions = true
+shader_parameter/debug_line_thickness = 0.0025
+shader_parameter/debug_color = Vector4(1, 0, 0, 1)
 
 [node name="Node2D" type="Node2D"]
 
 [node name="NinePatchSprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_1bvp3")
-position = Vector2(394, 334)
-scale = Vector2(5.173387, 4.298387)
+material = SubResource("ShaderMaterial_h2yge")
+position = Vector2(292.64063, 235.96875)
+scale = Vector2(2.892893, 2.452117)
 texture = ExtResource("1_0xm2m")
 script = ExtResource("2_h2yge")
+debug_draw_regions = true
+patch_mode = 1
+patch_left = 0.25
+patch_top = 0.25
+patch_right = 0.25
+patch_bottom = 0.25
 metadata/_custom_type_script = "uid://cwogro03wf3tj"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

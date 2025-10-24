@@ -6,11 +6,20 @@ extends Sprite2D
 class_name NinePatchSprite2D
 
 ## Draw the regions of the patch in the editor.
-@export var debug_draw_patches: bool = false:
+@export var debug_draw_regions: bool = false:
     set(value):
-        debug_draw_patches = value
+        debug_draw_regions = value
+        material.set_shader_parameter("debug_draw_regions", value)
     get:
-        return debug_draw_patches
+        return debug_draw_regions
+
+## Whether to automatically sync the shader "scale" parameter with the node's scale.
+## Turn off only if you need to achieve specific scaling behaviors.
+@export var auto_sync_scale: bool = true:
+    set(value):
+        auto_sync_scale = value
+    get:
+        return auto_sync_scale
 
 @export_group("Patch Insets")
 ## Patch unit mode, whether to use pixels or UV ratio for the patch insets.
@@ -60,6 +69,9 @@ class_name NinePatchSprite2D
 ################################
 var _mat: ShaderMaterial
 
+var _previous_modulate: Color = Color.WHITE
+var _previous_self_modulate: Color = Color.WHITE
+
 
 func _ready() -> void:
     if not Engine.is_editor_hint():
@@ -70,38 +82,15 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
     # Push object scale to the shader
-    _mat.set_shader_parameter("sprite_scale", scale)
+    if auto_sync_scale:
+        _mat.set_shader_parameter("sprite_scale", scale)
 
-
-func _draw() -> void:
-    if debug_draw_patches and texture:
-        var tex_size = texture.get_size()
-        var effective_offset = offset
-        if centered:
-            effective_offset -= tex_size / 2.0
-
-        # Convert patch values based on mode
-        var left = patch_left
-        var top = patch_top
-        var right = patch_right
-        var bottom = patch_bottom
-
-        if patch_mode == 1:
-            # Convert from UV ratios (0..1) to pixel coordinates
-            left *= tex_size.x
-            top *= tex_size.y
-            right *= tex_size.x
-            bottom *= tex_size.y
-
-        # Convert right/bottom from "distance from edge" to actual coordinates
-        right = tex_size.x - right
-        bottom = tex_size.y - bottom
-
-        # Draw the patch guides
-        draw_line(Vector2(left, 0) + effective_offset, Vector2(left, tex_size.y) + effective_offset, Color.RED)
-        draw_line(Vector2(right, 0) + effective_offset, Vector2(right, tex_size.y) + effective_offset, Color.RED)
-        draw_line(Vector2(0, top) + effective_offset, Vector2(tex_size.x, top) + effective_offset, Color.RED)
-        draw_line(Vector2(0, bottom) + effective_offset, Vector2(tex_size.x, bottom) + effective_offset, Color.RED)
+    if modulate != _previous_modulate:
+        _mat.set_shader_parameter("modulate", modulate)
+        _previous_modulate = modulate
+    if self_modulate != _previous_self_modulate:
+        _mat.set_shader_parameter("self_modulate", self_modulate)
+        _previous_self_modulate = self_modulate
 
 
 func _init_material() -> void:
@@ -119,6 +108,8 @@ func _convert_patch_values() -> void:
         return
 
     var tex_size = texture.get_size()
+
+    print("Converting patch values.")
 
     # patch_mode is the new mode we just switched TO
     if patch_mode == 1:
@@ -149,18 +140,20 @@ func _sync_shader() -> void:
         return
 
     # Convert pixel insets to normalized UV if needed
-    var fx = 1.0 / tex_size.x
-    var fy = 1.0 / tex_size.y
-    var left = patch_left * (fx if patch_mode == 0 else 1.0)
-    var right = patch_right * (fx if patch_mode == 0 else 1.0)
-    var top = patch_top * (fy if patch_mode == 0 else 1.0)
-    var bottom = patch_bottom * (fy if patch_mode == 0 else 1.0)
+    var effective_patch_left = patch_left
+    var effective_patch_top = patch_top
+    var effective_patch_right = patch_right
+    var effective_patch_bottom = patch_bottom
+    if patch_mode == 0:
+        # We are in pixel mode, so convert from pixels → ratios
+        effective_patch_left /= tex_size.x
+        effective_patch_top /= tex_size.y
+        effective_patch_right /= tex_size.x
+        effective_patch_bottom /= tex_size.y
 
-    _mat.set_shader_parameter("patch_left", left)
-    _mat.set_shader_parameter("patch_top", top)
-    _mat.set_shader_parameter("patch_right", right)
-    _mat.set_shader_parameter("patch_bottom", bottom)
-
-    _mat.set_shader_parameter("patch_mode", patch_mode)
+    _mat.set_shader_parameter("patch_left", effective_patch_left)
+    _mat.set_shader_parameter("patch_top", effective_patch_top)
+    _mat.set_shader_parameter("patch_right", effective_patch_right)
+    _mat.set_shader_parameter("patch_bottom", effective_patch_bottom)
 
     queue_redraw()
