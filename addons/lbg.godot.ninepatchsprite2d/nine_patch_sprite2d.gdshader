@@ -15,6 +15,11 @@ uniform float patch_top;
 uniform float patch_right;
 uniform float patch_bottom;
 
+// Extra scale factor for the outside tiles
+// Makes the borders thinner or thicker
+// Not to be confused with the internal "sprite_scale"
+uniform float border_scale = 1.0;
+
 // Sprite scale, passed in from the node
 // Needed to correctly remap the UV coordinates to the texture space
 // I.e. if the sprite is scaled, the UV coordinates need to be scaled inversely,
@@ -39,8 +44,9 @@ void fragment() {
     // Compute scaled border coordinates (from texture UV to "scaled sprite UV")
     // Dividing by sprite_scale to compensate for the sprite scaling not actually
     // ending up as "scale", but rather "size" in 9-patch, keeping the border thickness constant.
-    vec2 left_top = vec2(patch_left, patch_top) / sprite_scale;
-    vec2 right_bottom = vec2(patch_right, patch_bottom) / sprite_scale;
+    // border_scale, when used, also makes borders thinner/thicker.
+    vec2 left_top = vec2(patch_left, patch_top) / sprite_scale * border_scale;
+    vec2 right_bottom = vec2(patch_right, patch_bottom) / sprite_scale * border_scale;
 
     // Extract easier to use border size for each side
     float left_x   = left_top.x;
@@ -48,6 +54,28 @@ void fragment() {
     float top_y    = left_top.y;
     float bottom_y = 1.0 - right_bottom.y;
 
+
+    // ------------------------------
+    // Special case handling for the sprite being smaller than the patch insets
+    // In which case we shrink the patch insets to fit the sprite, rather than the other way around.
+    // This is what makes it display "only the corners, and trimmed" when too small
+    float total_w = right_x - left_x;
+    float total_h = bottom_y - top_y;
+
+    if (total_w <= 0.0) {
+        float shrink = -total_w * 0.5;
+        left_x = max(0.0, left_x - shrink);
+        right_x = min(1.0, right_x + shrink);
+    }
+
+    if (total_h <= 0.0) {
+        float shrink = -total_h * 0.5;
+        top_y = max(0.0, top_y - shrink);
+        bottom_y = min(1.0, bottom_y + shrink);
+    }
+    // ------------------------------
+
+    
     // Remapping
     // This is where we apply the mapping of the "scaled sprite UV" to the corect parts of the texture
     vec2 remapped_uv;
@@ -56,9 +84,9 @@ void fragment() {
     // is what gives us the "9-patches."
     // First processing left-to-right horizontal regions
     if (pos.x < left_x)
-        remapped_uv.x = pos.x * sprite_scale.x;
+        remapped_uv.x = (pos.x / border_scale) * sprite_scale.x;
     else if (pos.x > right_x)
-        remapped_uv.x = 1.0 - (1.0 - pos.x) * sprite_scale.x;
+        remapped_uv.x = 1.0 - ((1.0 - pos.x) / border_scale) * sprite_scale.x;
     else {
         float t = (pos.x - left_x) / (right_x - left_x);
         remapped_uv.x = mix(patch_left, 1.0 - patch_right, t);
@@ -66,9 +94,9 @@ void fragment() {
 
     // Then processing top-to-bottom vertical regions
     if (pos.y < top_y)
-        remapped_uv.y = pos.y * sprite_scale.y;
+        remapped_uv.y = (pos.y / border_scale) * sprite_scale.y;
     else if (pos.y > bottom_y)
-        remapped_uv.y = 1.0 - (1.0 - pos.y) * sprite_scale.y;
+        remapped_uv.y = 1.0 - ((1.0 - pos.y) / border_scale) * sprite_scale.y;
     else {
         float t = (pos.y - top_y) / (bottom_y - top_y);
         remapped_uv.y = mix(patch_top, 1.0 - patch_bottom, t);

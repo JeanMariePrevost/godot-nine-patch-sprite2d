@@ -21,19 +21,28 @@ class_name NinePatchSprite2D
     get:
         return auto_sync_scale
 
-@export_group("Patch Insets")
-## Patch unit mode, whether to use pixels or UV ratio for the patch insets.
-## E.g. you can have a "16px" border, or a "0.1 of the texture size" border.
-@export_enum("Pixels", "UV Ratio") var patch_mode: int = 0:
+@export_group("9-Patch Settings")
+## Extra scale factor for the outside tiles
+## Makes the borders thinner or thicker
+@export_range(0, 3, 0.01, "or_greater") var border_scale: float = 1.0:
     set(value):
-        patch_mode = value
+        border_scale = value
+        _sync_shader()
+    get:
+        return border_scale
+
+## Patch unit mode, whether to use pixels or UV ratio for the patch insets.
+## E.g. you can have a "16px" border, or a "25% of the texture size" border.
+@export_enum("Pixels", "UV Ratio") var patch_units: int = 1:
+    set(value):
+        patch_units = value
         _convert_patch_values()
         _sync_shader()
     get:
-        return patch_mode
+        return patch_units
 
 ## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
-@export var patch_left: float = 8.0:
+@export var patch_left: float = 0.25:
     set(value):
         patch_left = value
         _sync_shader()
@@ -41,7 +50,7 @@ class_name NinePatchSprite2D
         return patch_left
 
 ## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
-@export var patch_top: float = 8.0:
+@export var patch_top: float = 0.25:
     set(value):
         patch_top = value
         _sync_shader()
@@ -49,7 +58,7 @@ class_name NinePatchSprite2D
         return patch_top
 
 ## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
-@export var patch_right: float = 8.0:
+@export var patch_right: float = 0.25:
     set(value):
         patch_right = value
         _sync_shader()
@@ -57,7 +66,7 @@ class_name NinePatchSprite2D
         return patch_right
 
 ## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
-@export var patch_bottom: float = 8.0:
+@export var patch_bottom: float = 0.25:
     set(value):
         patch_bottom = value
         _sync_shader()
@@ -108,7 +117,7 @@ func _init_node() -> void:
     _sync_shader()
 
 
-## Used when changing inset "patch_mode" to make it more user-friendly
+## Used when changing inset "patch_units" to make it more user-friendly
 ## It converts back and forth between pixels and UV ratios.
 func _convert_patch_values() -> void:
     if not texture:
@@ -118,8 +127,8 @@ func _convert_patch_values() -> void:
 
     print("Converting patch values.")
 
-    # patch_mode is the new mode we just switched TO
-    if patch_mode == 1:
+    # patch_units is the new mode we just switched TO
+    if patch_units == 1:
         # We just switched TO UV-ratio mode, so convert from pixels → ratios
         patch_left /= tex_size.x
         patch_top /= tex_size.y
@@ -147,7 +156,7 @@ func _sync_shader() -> void:
     var effective_patch_top = patch_top
     var effective_patch_right = patch_right
     var effective_patch_bottom = patch_bottom
-    if patch_mode == 0:
+    if patch_units == 0:
         # We are in pixel mode, so convert from pixels → ratios
         effective_patch_left /= tex_size.x
         effective_patch_top /= tex_size.y
@@ -158,6 +167,8 @@ func _sync_shader() -> void:
     _mat.set_shader_parameter("patch_top", effective_patch_top)
     _mat.set_shader_parameter("patch_right", effective_patch_right)
     _mat.set_shader_parameter("patch_bottom", effective_patch_bottom)
+
+    _mat.set_shader_parameter("border_scale", border_scale)
 
     _mat.set_shader_parameter("debug_draw_regions", debug_draw_regions)
 
