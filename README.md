@@ -1,11 +1,11 @@
-# NinePatchSprite2D — 9-slice Sprite2D for Godot 4
+# NinePatchSprite2D - 9-slice Sprite2D for Godot 4
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![Godot 4.5+](https://img.shields.io/badge/Godot-4.5%2B-blue.svg)](https://godotengine.org/) [![Language: GDScript](https://img.shields.io/badge/Language-GDScript-478CBF.svg)](https://docs.godotengine.org/en/stable/) [![Status: WIP](https://img.shields.io/badge/Status-Work%20in%20Progress-orange.svg)](#development-status)
 
 NinePatchRect... for your sprites.
 
 NinePatchSprite2D aims to be an easy-to-use **Sprite2D** subclass that renders **nine-patch** (or "9-slice") sprites via a custom shader. 
 
-<img src="media/NinPatchSprite2D_Debug.png" width="200" alt="NinePatchSprite2D Debug View">
+<img src="media/NinePatchSprite2D_Debug.png" width="200" alt="NinePatchSprite2D Debug View">
 
 It mostly behaves like a normal Sprite2D (modulate, transform...), while allowing borders to remain crisp and the middle to stretch.
 
@@ -19,7 +19,7 @@ It mostly behaves like a normal Sprite2D (modulate, transform...), while allowin
 - Scale the borders separately from the sprite
 - User-friendly interface through the custom node type
 
-<img src="media/NinPatchSprite2D_Demo.png" alt="NinePatchSprite2D Demo">
+<img src="media/NinePatchSprite2D_Demo.png" alt="NinePatchSprite2D Demo">
 
 ---
 
@@ -65,7 +65,7 @@ See it in action in this brief demonstration over on youtube:
 
 ---
 
-## API (Exports)
+## API (NinePatchSprited2D Exported Properties)
 
 | Property              | Type     | Default | Notes |
 |----------------------|----------|---------|-------|
