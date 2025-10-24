@@ -16,21 +16,12 @@ export_presets.cfg
 
 # Exclude all the "meta" stuff that is't directly included in the game
 /non_game/
+/non-code/
 
 # Exclude my own tools
 /addons/lbg_tools/
 /godot_tools/
 /addons/lbg.godot.gdscript.gdtest/
-
-# Assets files
-*.png
-*.jpg
-*.jpeg
-*.ogg
-*.mp3
-*.ttf
-*.otf
-*.svg
 
 # Exported builds
 /bin/

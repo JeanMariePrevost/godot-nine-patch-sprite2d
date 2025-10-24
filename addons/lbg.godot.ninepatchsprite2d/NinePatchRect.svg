@@ -1,0 +1,19 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+	<defs>
+		<image width="16" height="16" id="img1" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZmlsbD0iIzhkYTVmMyIgZD0iTTUgMWE0IDQgMCAwIDAtNCA0djZhNCA0IDAgMCAwIDQgNGg2YTQgNCAwIDAgMCA0LTRWNWE0IDQgMCAwIDAtNC00ek0zIDdhMSAxIDAgMCAxIDIgMHYyYTEgMSAwIDAgMS0yIDB6bTEwIDJhMSAxIDAgMCAxLTIgMFY3YTEgMSAwIDAgMSAyIDB6bS0yLjE3MiAzLjgyOGE0IDQgMCAwIDEtNS42NTYgMCAxIDEgMCAwIDEgMS40MTQtMS40MTQgMiAyIDAgMCAwIDIuODI4IDAgMSAxIDAgMCAxIDEuNDE0IDEuNDE0eiIvPjwvc3ZnPgo="/>
+	</defs>
+	<style>
+		.s0 { fill: #485b9c } 
+	</style>
+	<use id="Sprite2D" href="#img1" transform="matrix(1,0,0,1,0,0)"/>
+	<path id="Shape 4" fill-rule="evenodd" class="s0" d="m6 0v16h-2v-16z"/>
+	<path id="Shape 5" fill-rule="evenodd" class="s0" d="m12 0v16h-2v-16z"/>
+	<path id="Shape 6" fill-rule="evenodd" class="s0" d="m17 4v2h-17v-2z"/>
+	<path id="Shape 7" fill-rule="evenodd" class="s0" d="m16 10v2h-16v-2z"/>
+	<g id="Folder 1">
+		<path id="Layer 1" fill-rule="evenodd" class="s0" d="m6 0v16h-1v-16z"/>
+		<path id="Shape 1" fill-rule="evenodd" class="s0" d="m11 0v16h-1v-16z"/>
+		<path id="Shape 2" fill-rule="evenodd" class="s0" d="m16 5v1h-16v-1z"/>
+		<path id="Shape 3" fill-rule="evenodd" class="s0" d="m16 10v1h-16v-1z"/>
+	</g>
+</svg>

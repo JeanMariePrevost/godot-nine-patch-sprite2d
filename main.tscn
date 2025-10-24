@@ -10,10 +10,11 @@ shader_parameter/patch_left = 0.25
 shader_parameter/patch_top = 0.25
 shader_parameter/patch_right = 0.25
 shader_parameter/patch_bottom = 0.25
-shader_parameter/sprite_scale = Vector2(2.892893, 2.452117)
+shader_parameter/border_scale = 1.0
+shader_parameter/sprite_scale = Vector2(2.2719252, 1.3956652)
 shader_parameter/modulate = Vector4(1, 1, 1, 1)
 shader_parameter/self_modulate = Vector4(1, 1, 1, 1)
-shader_parameter/debug_draw_regions = true
+shader_parameter/debug_draw_regions = false
 shader_parameter/debug_line_thickness = 0.0025
 shader_parameter/debug_color = Vector4(1, 0, 0, 1)
 
@@ -21,16 +22,10 @@ shader_parameter/debug_color = Vector4(1, 0, 0, 1)
 
 [node name="NinePatchSprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_h2yge")
-position = Vector2(292.64063, 235.96875)
-scale = Vector2(2.892893, 2.452117)
+position = Vector2(254.14063, 170.46875)
+scale = Vector2(2.2719252, 1.3956652)
 texture = ExtResource("1_0xm2m")
 script = ExtResource("2_h2yge")
-debug_draw_regions = true
-patch_mode = 1
-patch_left = 0.25
-patch_top = 0.25
-patch_right = 0.25
-patch_bottom = 0.25
 metadata/_custom_type_script = "uid://cwogro03wf3tj"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
