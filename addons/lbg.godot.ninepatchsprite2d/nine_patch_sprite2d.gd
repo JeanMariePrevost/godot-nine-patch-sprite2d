@@ -41,7 +41,7 @@ class_name NinePatchSprite2D
     get:
         return patch_units
 
-## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
+## Thicnkess of the left border. 0..1 if using UV ratio, in pixels if using pixels.
 @export var patch_left: float = 0.25:
     set(value):
         patch_left = value
@@ -49,7 +49,7 @@ class_name NinePatchSprite2D
     get:
         return patch_left
 
-## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
+## Thicnkess of the top border. 0..1 if using UV ratio, in pixels if using pixels.
 @export var patch_top: float = 0.25:
     set(value):
         patch_top = value
@@ -57,7 +57,7 @@ class_name NinePatchSprite2D
     get:
         return patch_top
 
-## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
+## Thicnkess of the right border. 0..1 if using UV ratio, in pixels if using pixels.
 @export var patch_right: float = 0.25:
     set(value):
         patch_right = value
@@ -65,7 +65,7 @@ class_name NinePatchSprite2D
     get:
         return patch_right
 
-## Patch inset values, or "thickness of the border." In pixels or UV ratio depending on the patch mode.
+## Thicnkess of the bottom border. 0..1 if using UV ratio, in pixels if using pixels.
 @export var patch_bottom: float = 0.25:
     set(value):
         patch_bottom = value
