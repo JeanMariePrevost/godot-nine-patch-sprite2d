@@ -87,7 +87,15 @@ E.g. on a 250px texture, 50px will turn into 0.2 UV ratio when switch, and vice 
 
 ## Limitations
 
-* The node requires the use of a ShaderMaterial using `nine_patch_sprite2d.gdshader` in order to work. This means you cannot easily apply a shader _to_ a NinePatchSprite2D.
+The node requires the use of a ShaderMaterial using `nine_patch_sprite2d.gdshader` in order to work. This means you cannot easily apply a shader _to_ a NinePatchSprite2D.
+
+---
+
+## Credits
+
+This project was directly inspired by [9-slice shader](https://godotshaders.com/shader/9-slice-shader/?post_id=2490) by GaidamakUA.
+
+Check out their project if you only want a lighter "shader-only" version of the same concept.
 
 ---
 
