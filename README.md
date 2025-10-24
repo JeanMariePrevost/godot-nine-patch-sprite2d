@@ -42,6 +42,8 @@ See it in action in this brief demonstration over on youtube:
 
 3. Add **NinePatchSprite2D** to your scene from the **Create Node** dialog.
 
+Note: If the NinePatchSprite2D node behaves just like a regular Sprite2D after first installing it, **reload the current scene or restart the Godot editor** for changes to be visible inside the editor.
+
 ---
 
 ## Quick Start
